@@ -39,35 +39,22 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
     this.routeSubscription = this.route.params.subscribe(params => {
       const productId = parseInt(params['id'], 10);
-      let foundProduct = false;
-      let attempts = 0;
-      const maxAttempts = 50; // Wait up to 5 seconds for data
 
-      const checkForProduct = (products: Product[]) => {
-        const product = products.find(p => p.id === productId);
-        if (product) {
-          this.product = product;
-          this.loading = false;
-          foundProduct = true;
-          return true;
-        }
-
-        attempts++;
-        if (attempts >= maxAttempts) {
-          if (!foundProduct) {
+      this.productsSubscription = this.productService.products$.pipe(
+        filter(products => products.length > 0 || this.loading === false),
+        timeout(5000)
+      ).subscribe({
+        next: (products) => {
+          const foundProduct = products.find(p => p.id === productId);
+          if (foundProduct) {
+            this.product = foundProduct;
+            this.loading = false;
+          } else if (products.length > 0) {
+            // We have products but this one isn't in the list
             this.errorMessage = 'Product not found';
             this.loading = false;
           }
-          return true;
-        }
-        return false;
-      };
-
-      this.productsSubscription = this.productService.products$.subscribe({
-        next: (products) => {
-          if (checkForProduct(products)) {
-            this.productsSubscription?.unsubscribe();
-          }
+          // Keep waiting if products list is still empty
         },
         error: (err) => {
           console.error('Failed to load product:', err);
