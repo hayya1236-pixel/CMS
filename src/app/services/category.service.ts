@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, timeout } from 'rxjs';
 import { Category } from '../models/category.model';
 import { environment } from '../../environments/environment';
 
@@ -18,7 +18,9 @@ export class CategoryService {
 
   // Load all categories
   private loadCategories(): void {
-    this.getCategories().subscribe({
+    this.getCategories().pipe(
+      timeout(3000)
+    ).subscribe({
       next: (categories) => {
         this.categoriesSubject.next(categories);
       },
