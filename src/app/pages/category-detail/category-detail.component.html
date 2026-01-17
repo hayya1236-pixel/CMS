@@ -90,12 +90,56 @@
     <div class="actions-section">
       <h2>Quick Actions</h2>
       <div class="action-buttons">
-        <button class="btn-primary">
+        <button class="btn-primary" (click)="viewProductsInCategory()">
           🛍️ View Products in Category ({{ category.productCount }})
         </button>
         <button class="btn-secondary" (click)="goBack()">
           ← Back to Categories
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Products Modal -->
+  <div class="modal-overlay" *ngIf="showProductsModal" (click)="closeProductsModal()">
+    <div class="modal-content products-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Products in {{ category!.name }}</h3>
+        <button class="modal-close" (click)="closeProductsModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="loadingProducts" class="loading-message">
+          <p>Loading products...</p>
+        </div>
+
+        <div *ngIf="!loadingProducts && categoryProducts.length === 0" class="no-products-message">
+          <p>No products found in this category.</p>
+        </div>
+
+        <div *ngIf="!loadingProducts && categoryProducts.length > 0" class="products-list">
+          <div class="product-item" *ngFor="let product of categoryProducts">
+            <div class="product-item-image">
+              <img
+                [src]="product.image_url"
+                [alt]="product.name"
+                onerror="this.src='https://images.unsplash.com/photo-1557821552-17105176677c?w=100&h=100&fit=crop'"
+              />
+            </div>
+            <div class="product-item-info">
+              <h4>{{ product.name }}</h4>
+              <p class="product-item-description">{{ product.description }}</p>
+              <div class="product-item-details">
+                <span class="price">{{ formatPrice(product.price) }}</span>
+                <span class="stock" [ngClass]="product.stock > 0 ? 'in-stock' : 'out-of-stock'">
+                  Stock: {{ product.stock }}
+                </span>
+              </div>
+            </div>
+            <button class="btn-view-product" (click)="viewProduct(product.id)">
+              View →
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
