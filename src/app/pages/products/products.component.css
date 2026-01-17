@@ -370,6 +370,25 @@ select:focus {
   font-family: 'Courier New', monospace;
 }
 
+.product-view-btn {
+  margin-top: auto;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.product-view-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
 .btn-action {
   padding: 8px 14px;
   font-size: 0.75rem;
