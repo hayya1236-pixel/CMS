@@ -37,6 +37,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.categoriesSubscription?.unsubscribe();
     this.routeSubscription?.unsubscribe();
+    this.productsSubscription?.unsubscribe();
   }
 
   loadCategory(): void {
