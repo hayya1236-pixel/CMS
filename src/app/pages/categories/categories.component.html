@@ -109,7 +109,7 @@
           <span class="date-value">{{ formatDate(category.last_modified) }}</span>
         </div>
       </div>
-      <a href="#" class="category-link">View Products →</a>
+      <button class="category-view-btn" [routerLink]="['/category', category.id]">View Category →</button>
     </div>
   </div>
 
