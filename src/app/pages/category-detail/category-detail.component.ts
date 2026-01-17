@@ -48,16 +48,21 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
     this.routeSubscription = this.route.params.subscribe(params => {
       const categoryId = parseInt(params['id'], 10);
 
-      this.categoriesSubscription = this.categoryService.categories$.subscribe({
+      this.categoriesSubscription = this.categoryService.categories$.pipe(
+        filter(categories => categories.length > 0 || this.loading === false),
+        timeout(5000)
+      ).subscribe({
         next: (categories) => {
           const foundCategory = categories.find(c => c.id === categoryId);
           if (foundCategory) {
             this.category = foundCategory;
             this.loading = false;
-          } else {
+          } else if (categories.length > 0) {
+            // We have categories but this one isn't in the list
             this.errorMessage = 'Category not found';
             this.loading = false;
           }
+          // Keep waiting if categories list is still empty
         },
         error: (err) => {
           console.error('Failed to load category:', err);
