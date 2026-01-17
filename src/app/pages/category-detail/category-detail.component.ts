@@ -78,22 +78,29 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
   }
 
   viewProductsInCategory(): void {
-    if (!this.category) return;
+    if (!this.category) {
+      console.warn('Category is not loaded yet');
+      return;
+    }
 
+    this.showProductsModal = true;
     this.loadingProducts = true;
     this.categoryProducts = [];
 
-    this.productsSubscription = this.productService.products$.subscribe({
+    // Get the current products immediately if available
+    this.productService.products$.pipe(
+      timeout(5000)
+    ).subscribe({
       next: (products) => {
-        this.categoryProducts = products.filter(p => p.categoryId === this.category!.id);
+        if (products && products.length > 0) {
+          this.categoryProducts = products.filter(p => p.categoryId === this.category!.id);
+        }
         this.loadingProducts = false;
-        this.showProductsModal = true;
       },
       error: (err) => {
         console.error('Failed to load products:', err);
         this.loadingProducts = false;
         this.categoryProducts = [];
-        this.showProductsModal = true;
       }
     });
   }
