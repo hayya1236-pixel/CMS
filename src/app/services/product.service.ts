@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, timeout } from 'rxjs';
 import { Product } from '../models/product.model';
 import { environment } from '../../environments/environment';
 
@@ -18,7 +18,9 @@ export class ProductService {
 
   // Load all products
   private loadProducts(): void {
-    this.getProducts().subscribe({
+    this.getProducts().pipe(
+      timeout(3000)
+    ).subscribe({
       next: (products) => {
         this.productsSubject.next(products);
       },
