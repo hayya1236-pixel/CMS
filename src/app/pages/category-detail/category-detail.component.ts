@@ -71,6 +71,42 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['/categories']);
   }
 
+  viewProductsInCategory(): void {
+    if (!this.category) return;
+
+    this.loadingProducts = true;
+    this.categoryProducts = [];
+
+    this.productsSubscription = this.productService.products$.subscribe({
+      next: (products) => {
+        this.categoryProducts = products.filter(p => p.categoryId === this.category!.id);
+        this.loadingProducts = false;
+        this.showProductsModal = true;
+      },
+      error: (err) => {
+        console.error('Failed to load products:', err);
+        this.loadingProducts = false;
+        this.categoryProducts = [];
+        this.showProductsModal = true;
+      }
+    });
+  }
+
+  closeProductsModal(): void {
+    this.showProductsModal = false;
+  }
+
+  viewProduct(productId: number): void {
+    this.router.navigate(['/product', productId]);
+  }
+
+  formatPrice(price: number): string {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(price);
+  }
+
   formatDate(date: Date | string): string {
     const dateObj = typeof date === 'string' ? new Date(date) : date;
     return dateObj.toLocaleDateString('en-US', {
