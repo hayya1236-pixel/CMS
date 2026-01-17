@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { filter, takeWhile, timeout } from 'rxjs/operators';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
 
