@@ -2,7 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CategoryService } from '../../services/category.service';
+import { ProductService } from '../../services/product.service';
 import { Category } from '../../models/category.model';
+import { Product } from '../../models/product.model';
 
 @Component({
   selector: 'app-category-detail',
@@ -14,11 +16,16 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
   category: Category | null = null;
   loading: boolean = true;
   errorMessage: string = '';
+  categoryProducts: Product[] = [];
+  loadingProducts: boolean = false;
+  showProductsModal: boolean = false;
   private categoriesSubscription?: Subscription;
   private routeSubscription?: Subscription;
+  private productsSubscription?: Subscription;
 
   constructor(
     private categoryService: CategoryService,
+    private productService: ProductService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
