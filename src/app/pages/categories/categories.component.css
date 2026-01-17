@@ -319,20 +319,25 @@ select:focus {
   font-family: 'Courier New', monospace;
 }
 
-.category-link {
-  color: #007bff;
-  text-decoration: none;
-  font-weight: 600;
-  display: block;
+.category-view-btn {
   padding: 12px 20px;
+  margin-top: auto;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
   transition: all 0.3s ease;
-  text-align: center;
-  background: linear-gradient(to right, transparent, rgba(0, 123, 255, 0.05), transparent);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  display: block;
+  width: 100%;
 }
 
-.category-link:hover {
-  color: #0056b3;
-  background: linear-gradient(to right, transparent, rgba(0, 123, 255, 0.1), transparent);
+.category-view-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
 .loading-message,
